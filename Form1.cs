@@ -27,7 +27,7 @@ namespace GameOfLife
         int generations = 0;
 
         int seed = 0;
-        
+
         public Form1()
         {
             InitializeComponent();
@@ -92,12 +92,12 @@ namespace GameOfLife
                 // Iterate through the universe in the x, left to right
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    if(universe[x, y] == true)
+                    if (universe[x, y] == true)
                     {
                         alive++;
                         AliveStripStatusLabel1.Text = "Alive Cells = " + alive.ToString();
                     }
-                    if(universe[x,y] == false)
+                    if (universe[x, y] == false)
                     {
                         dead++;
                         DeadStripStatusLabel1.Text = "Dead Cells = " + dead.ToString();
@@ -135,6 +135,7 @@ namespace GameOfLife
 
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
+            CountNeighbors();
             // Calculate the width and height of each cell in pixels
             // CELL WIDTH = WINDOW WIDTH / NUMBER OF CELLS IN X
             int cellWidth = graphicsPanel1.ClientSize.Width / universe.GetLength(0);
@@ -168,20 +169,17 @@ namespace GameOfLife
 
                     // Outline the cell with a pen
                     e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
+                    Font font = new Font("Arial", 20f);
+
+                    StringFormat stringFormat = new StringFormat();
+                    stringFormat.Alignment = StringAlignment.Center;
+                    stringFormat.LineAlignment = StringAlignment.Center;
+                    int neighbors = 0;
+
+                    e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, cellRect, stringFormat);
+
                 }
             }
-
-            Font font = new Font("Arial", 20f);
-
-            StringFormat stringFormat = new StringFormat();
-            stringFormat.Alignment = StringAlignment.Center;
-            stringFormat.LineAlignment = StringAlignment.Center;
-
-            Rectangle rect = new Rectangle(0,210, 20, 100);
-            int neighbors = 8;
-
-            e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, rect, stringFormat);
-
 
             // Cleaning up pens and brushes
             gridPen.Dispose();
@@ -304,13 +302,13 @@ namespace GameOfLife
 
                 // Iterate through the universe one row at a time.
                 for (int y = 0; y < universe.GetLength(1); y++)
-                 {
+                {
                     // Create a string to represent the current row.
                     String currentRow = string.Empty;
 
                     // Iterate through the current row one cell at a time.
                     for (int x = 0; x < universe.GetLength(0); x++)
-                        {
+                    {
                         // If the universe[x,y] is alive then append 'O' (capital O)
                         // to the row string.
                         if (universe[x, y])
@@ -353,16 +351,16 @@ namespace GameOfLife
 
                 // Iterate through the universe one row at a time.
                 for (int y = 0; y < universe.GetLength(1); y++)
-     {
+                {
                     // Create a string to represent the current row.
                     String currentRow = string.Empty;
 
                     // Iterate through the current row one cell at a time.
                     for (int x = 0; x < universe.GetLength(0); x++)
-          {
+                    {
                         // If the universe[x,y] is alive then append 'O' (capital O)
                         // to the row string.
-                        if(universe[x, y])
+                        if (universe[x, y])
                         {
                             currentRow += 'O';
                         }
@@ -390,7 +388,7 @@ namespace GameOfLife
 
             dlg.Color = cellColor;
 
-            if(DialogResult.OK == dlg.ShowDialog())
+            if (DialogResult.OK == dlg.ShowDialog())
             {
                 cellColor = dlg.Color;
 
@@ -430,7 +428,7 @@ namespace GameOfLife
             ColorDialog dlg = new ColorDialog();
 
             dlg.Color = gridColor;
-            
+
             if (DialogResult.OK == dlg.ShowDialog())
             {
                 gridColor = dlg.Color;
