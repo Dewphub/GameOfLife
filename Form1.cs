@@ -26,6 +26,7 @@ namespace GameOfLife
         // Generation count
         int generations = 0;
 
+        int seed = 0;
         
         public Form1()
         {
@@ -82,11 +83,54 @@ namespace GameOfLife
             //Invaildate the Graphics Panel
             graphicsPanel1.Invalidate();
         }
-
+        private void CountNeighbors()
+        {
+            int alive = 0;
+            int dead = 0;
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                // Iterate through the universe in the x, left to right
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    if(universe[x, y] == true)
+                    {
+                        alive++;
+                        AliveStripStatusLabel1.Text = "Alive Cells = " + alive.ToString();
+                    }
+                    if(universe[x,y] == false)
+                    {
+                        dead++;
+                        DeadStripStatusLabel1.Text = "Dead Cells = " + dead.ToString();
+                    }
+                }
+            }
+            graphicsPanel1.Invalidate();
+        }
         // The event called by the timer every Interval milliseconds.
         private void Timer_Tick(object sender, EventArgs e)
         {
             NextGeneration();
+            CountNeighbors();
+        }
+
+        private void Randomize()
+        {
+            Random random = new Random();
+            Random randomSeed = new Random(seed);
+
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                // Iterate through the universe in the x, left to right
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    random.Next(0, 2);
+                    if (random.Next(0, 2) == 0)
+                        universe[x, y] = true;
+                }
+            }
+            CountNeighbors();
+
+            graphicsPanel1.Invalidate();
         }
 
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
@@ -133,7 +177,7 @@ namespace GameOfLife
             stringFormat.Alignment = StringAlignment.Center;
             stringFormat.LineAlignment = StringAlignment.Center;
 
-            Rectangle rect = new Rectangle(0, 0, 100, 100);
+            Rectangle rect = new Rectangle(0,210, 20, 100);
             int neighbors = 8;
 
             e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, rect, stringFormat);
@@ -161,6 +205,7 @@ namespace GameOfLife
 
                 // Toggle the cell's state
                 universe[x, y] = !universe[x, y];
+                CountNeighbors();
 
                 // Tell Windows you need to repaint
                 graphicsPanel1.Invalidate();
@@ -357,9 +402,12 @@ namespace GameOfLife
         private void modalToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormModal dlg2 = new FormModal();
-            if(DialogResult.OK == dlg2.ShowDialog())
-            {
+            dlg2.Number = seed;
 
+            if (DialogResult.OK == dlg2.ShowDialog())
+            {
+                seed = dlg2.Number;
+                Randomize();
             }
         }
 
@@ -382,7 +430,7 @@ namespace GameOfLife
             ColorDialog dlg = new ColorDialog();
 
             dlg.Color = gridColor;
-
+            
             if (DialogResult.OK == dlg.ShowDialog())
             {
                 gridColor = dlg.Color;
@@ -390,6 +438,17 @@ namespace GameOfLife
                 graphicsPanel1.Invalidate();
             }
 
+        }
+
+        private void randomizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Randomize();
+        }
+
+        private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OptionsForm options = new OptionsForm();
+            options.ShowDialog();
         }
     }
 }

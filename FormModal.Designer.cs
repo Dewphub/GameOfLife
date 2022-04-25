@@ -30,7 +30,10 @@
         {
             this.buttonO = new System.Windows.Forms.Button();
             this.buttonC = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.seedNum = new System.Windows.Forms.Label();
+            this.RandButton = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonO
@@ -53,12 +56,38 @@
             this.buttonC.Text = "Cancel";
             this.buttonC.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // numericUpDown1
             // 
-            this.textBox1.Location = new System.Drawing.Point(76, 34);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 2;
+            this.numericUpDown1.Location = new System.Drawing.Point(156, 71);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown1.TabIndex = 3;
+            // 
+            // seedNum
+            // 
+            this.seedNum.AllowDrop = true;
+            this.seedNum.AutoSize = true;
+            this.seedNum.Location = new System.Drawing.Point(101, 73);
+            this.seedNum.Name = "seedNum";
+            this.seedNum.Size = new System.Drawing.Size(39, 13);
+            this.seedNum.TabIndex = 4;
+            this.seedNum.Text = "Seed#";
+            this.seedNum.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // RandButton
+            // 
+            this.RandButton.Location = new System.Drawing.Point(282, 68);
+            this.RandButton.Name = "RandButton";
+            this.RandButton.Size = new System.Drawing.Size(75, 23);
+            this.RandButton.TabIndex = 5;
+            this.RandButton.Text = "Randomize";
+            this.RandButton.UseVisualStyleBackColor = true;
+            this.RandButton.Click += new System.EventHandler(this.RandButton_Click);
             // 
             // FormModal
             // 
@@ -67,14 +96,18 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonC;
             this.ClientSize = new System.Drawing.Size(425, 224);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.RandButton);
+            this.Controls.Add(this.seedNum);
+            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.buttonC);
             this.Controls.Add(this.buttonO);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormModal";
-            this.Text = "FormModal";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Seed Picker";
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -84,6 +117,8 @@
 
         private System.Windows.Forms.Button buttonO;
         private System.Windows.Forms.Button buttonC;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label seedNum;
+        private System.Windows.Forms.Button RandButton;
     }
 }

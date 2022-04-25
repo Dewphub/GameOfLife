@@ -16,5 +16,23 @@ namespace GameOfLife
         {
             InitializeComponent();
         }
+
+        public int Number
+        {
+            get
+            {
+                return (int)numericUpDown1.Value;
+            }
+            set
+            {
+                numericUpDown1.Value = value;
+            }
+        }
+
+        private void RandButton_Click(object sender, EventArgs e)
+        {
+            Random random = new Random();
+            numericUpDown1.Value = random.Next(0, 100000);
+        }
     }
 }
