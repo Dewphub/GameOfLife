@@ -80,7 +80,17 @@
             // 
             // numericUpDownTime
             // 
+            this.numericUpDownTime.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.numericUpDownTime.Location = new System.Drawing.Point(203, 53);
+            this.numericUpDownTime.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.numericUpDownTime.Name = "numericUpDownTime";
             this.numericUpDownTime.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownTime.TabIndex = 5;

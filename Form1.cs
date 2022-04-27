@@ -31,9 +31,20 @@ namespace GameOfLife
 
         int seed = 0;
         bool isToroidal = true;
+        Font font = new Font("Arial", 20f);
         public Form1()
         {
             InitializeComponent();
+            universe = new bool[uniWith, uniHeight];
+            scratchPad = new bool[uniWith, uniHeight];
+
+            graphicsPanel1.BackColor = Properties.Settings.Default.BackColor;
+            gridColor = Properties.Settings.Default.GridColor;
+            cellColor = Properties.Settings.Default.CellColor;
+            timer.Interval = Properties.Settings.Default.Time;
+            uniWith = Properties.Settings.Default.UniWidth;
+            uniHeight = Properties.Settings.Default.UniHeight;
+            isToroidal = Properties.Settings.Default.IsTorodial;
 
             // Setup the timer
             timer.Interval = 100; // milliseconds
@@ -173,7 +184,6 @@ namespace GameOfLife
 
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
-            Font font = new Font("Arial", 20f);
 
             StringFormat stringFormat = new StringFormat();
             stringFormat.Alignment = StringAlignment.Center;
@@ -247,7 +257,10 @@ namespace GameOfLife
 
                 // Toggle the cell's state
                 universe[x, y] = !universe[x, y];
-                CountNeighborsToroidal(x, y);
+                if (isToroidal == true)
+                    CountNeighborsToroidal(x, y);
+                else
+                    CountNeighborsFinite(x, y);
 
                 // Tell Windows you need to repaint
                 graphicsPanel1.Invalidate();
@@ -524,15 +537,15 @@ namespace GameOfLife
 
             if (DialogResult.OK == options.ShowDialog())
             {
-                uniWith = options.Number;
+                uniWith = options.WidthNum;
                 uniHeight = options.HeightNum;
                 timer.Interval = options.Number;
+                timeStripStatusLabel1.Text = "Time Interval = " + timer.Interval.ToString();
                 universe = new bool[uniWith, uniHeight];
                 scratchPad = new bool[uniWith, uniHeight];
 
                 graphicsPanel1.Invalidate();
             }
-           
         }
 
         private void toggleGridLinesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -562,5 +575,53 @@ namespace GameOfLife
             statusStrip1.Visible = !statusStrip1.Visible;
 
         }
+
+        public void WhosWho()
+        {
+            if (toroidalToolStripMenuItem.Checked == true)
+                CountStripStatusLabel1.Text = "Counting Style = Toroidal";
+            else
+                CountStripStatusLabel1.Text = "Counting Style = Finite";
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Properties.Settings.Default.BackColor = graphicsPanel1.BackColor;
+            Properties.Settings.Default.GridColor = gridColor;
+            Properties.Settings.Default.CellColor = cellColor;
+            Properties.Settings.Default.Time = timer.Interval;
+            Properties.Settings.Default.UniWidth = uniWith;
+            Properties.Settings.Default.UniHeight = uniHeight;
+            Properties.Settings.Default.IsTorodial = isToroidal;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reset();
+
+            graphicsPanel1.BackColor = Properties.Settings.Default.BackColor;
+            gridColor = Properties.Settings.Default.GridColor;
+            cellColor = Properties.Settings.Default.CellColor;
+            timer.Interval = Properties.Settings.Default.Time;
+            uniWith = Properties.Settings.Default.UniWidth;
+            uniHeight = Properties.Settings.Default.UniHeight;
+            isToroidal = Properties.Settings.Default.IsTorodial;
+        }
+
+        private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reload();
+
+            graphicsPanel1.BackColor = Properties.Settings.Default.BackColor;
+            gridColor = Properties.Settings.Default.GridColor;
+            cellColor = Properties.Settings.Default.CellColor;
+            timer.Interval = Properties.Settings.Default.Time;
+            uniWith = Properties.Settings.Default.UniWidth;
+            uniHeight = Properties.Settings.Default.UniHeight;
+            isToroidal = Properties.Settings.Default.IsTorodial;
+        }
+
     }
 }
