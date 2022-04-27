@@ -13,8 +13,11 @@ namespace GameOfLife
 {
     public partial class Form1 : Form
     {
+        int uniWith = 10;
+        int uniHeight = 10;
         // The universe array
         bool[,] universe = new bool[10, 10];
+        bool[,] scratchPad = new bool[10, 10];
 
         // Drawing colors
         Color gridColor = Color.Black;
@@ -27,7 +30,7 @@ namespace GameOfLife
         int generations = 0;
 
         int seed = 0;
-
+        bool isToroidal = true;
         public Form1()
         {
             InitializeComponent();
@@ -41,13 +44,16 @@ namespace GameOfLife
         // Calculate the next generation of cells
         private void NextGeneration()
         {
-            bool[,] scratchPad = new bool[10, 10];
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 // Iterate through the universe in the x, left to right
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    int count = CountNeighborsToroidal(x, y);
+                    int count;
+                    if (isToroidal == true)
+                        count = CountNeighborsToroidal(x, y);
+                    else
+                        count = CountNeighborsFinite(x, y);
                     //Apply the rules
                     if (count > 2)
                     {
@@ -106,6 +112,38 @@ namespace GameOfLife
             }
             graphicsPanel1.Invalidate();
         }
+
+        private int CountNeighborsFinite(int x, int y)
+        {
+            int count = 0;
+            int xLen = universe.GetLength(0);
+            int yLen = universe.GetLength(1);
+            for (int yOffset = -1; yOffset <= 1; yOffset++)
+            {
+                for (int xOffset = -1; xOffset <= 1; xOffset++)
+                {
+                    int xCheck = x + xOffset;
+                    int yCheck = y + yOffset;
+                    // if xOffset and yOffset are both equal to 0 then continue
+                    if (xOffset == yOffset)
+                        continue;
+                    // if xCheck is less than 0 then continue
+                    if (xCheck < 0)
+                        continue;
+                    // if yCheck is less than 0 then continue
+                    if (yCheck < 0)
+                        continue;
+                    // if xCheck is greater than or equal too xLen then continue
+                    if (xCheck >= xLen)
+                        continue;
+                    // if yCheck is greater than or equal too yLen then continue
+                    if (yCheck >= yLen)
+                        continue;
+                    if (universe[xCheck, yCheck] == true) count++;
+                }
+            }
+            return count;
+        }
         // The event called by the timer every Interval milliseconds.
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -129,13 +167,18 @@ namespace GameOfLife
                 }
             }
             CountNeighbors();
-
+            SeedStripStatusLabel.Text = "Seed = " + random.Next(0, 100000).ToString();
             graphicsPanel1.Invalidate();
         }
 
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
-            CountNeighbors();
+            Font font = new Font("Arial", 20f);
+
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.Alignment = StringAlignment.Center;
+            stringFormat.LineAlignment = StringAlignment.Center;
+
             // Calculate the width and height of each cell in pixels
             // CELL WIDTH = WINDOW WIDTH / NUMBER OF CELLS IN X
             int cellWidth = graphicsPanel1.ClientSize.Width / universe.GetLength(0);
@@ -165,18 +208,19 @@ namespace GameOfLife
                     if (universe[x, y] == true)
                     {
                         e.Graphics.FillRectangle(cellBrush, cellRect);
+                        if (isToroidal == true)
+                        {
+                            e.Graphics.DrawString(CountNeighborsToroidal(x, y).ToString(), font, Brushes.Black, cellRect, stringFormat);
+                        }
+                        else
+                        {
+                            e.Graphics.DrawString(CountNeighborsFinite(x, y).ToString(), font, Brushes.Black, cellRect, stringFormat);
+                        }
+
                     }
 
                     // Outline the cell with a pen
                     e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
-                    Font font = new Font("Arial", 20f);
-
-                    StringFormat stringFormat = new StringFormat();
-                    stringFormat.Alignment = StringAlignment.Center;
-                    stringFormat.LineAlignment = StringAlignment.Center;
-                    int neighbors = 0;
-
-                    e.Graphics.DrawString(neighbors.ToString(), font, Brushes.Black, cellRect, stringFormat);
 
                 }
             }
@@ -203,7 +247,7 @@ namespace GameOfLife
 
                 // Toggle the cell's state
                 universe[x, y] = !universe[x, y];
-                CountNeighbors();
+                CountNeighborsToroidal(x, y);
 
                 // Tell Windows you need to repaint
                 graphicsPanel1.Invalidate();
@@ -246,7 +290,7 @@ namespace GameOfLife
                     {
                         yCheck = 0;
                     }
-                    if (universe[xCheck, yCheck] == true) count++;
+                    if (universe[xCheck, yCheck]) count++;
                 }
             }
             return count;
@@ -334,51 +378,77 @@ namespace GameOfLife
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog dlg = new SaveFileDialog();
+            OpenFileDialog dlg = new OpenFileDialog();
             dlg.Filter = "All Files|*.*|Cells|*.cells";
-            dlg.FilterIndex = 2; dlg.DefaultExt = "cells";
-
-
+            dlg.FilterIndex = 2;
+            int yPos = 0;
             if (DialogResult.OK == dlg.ShowDialog())
             {
-                StreamWriter writer = new StreamWriter(dlg.FileName);
+                StreamReader reader = new StreamReader(dlg.FileName);
 
-                // Write any comments you want to include first.
-                // Prefix all comment strings with an exclamation point.
-                // Use WriteLine to write the strings to the file. 
-                // It appends a CRLF for you.
-                writer.WriteLine("!cell files and .txt files work.");
+                // Create a couple variables to calculate the width and height
+                // of the data in the file.
+                int maxWidth = 0;
+                int maxHeight = 0;
 
-                // Iterate through the universe one row at a time.
-                for (int y = 0; y < universe.GetLength(1); y++)
+                // Iterate through the file once to get its size.
+                while (!reader.EndOfStream)
                 {
-                    // Create a string to represent the current row.
-                    String currentRow = string.Empty;
+                    // Read one row at a time.
+                    string row = reader.ReadLine();
 
-                    // Iterate through the current row one cell at a time.
-                    for (int x = 0; x < universe.GetLength(0); x++)
+                    // If the row begins with '!' then it is a comment
+                    // and should be ignored.
+                    if(row[0] == '!')
                     {
-                        // If the universe[x,y] is alive then append 'O' (capital O)
-                        // to the row string.
-                        if (universe[x, y])
-                        {
-                            currentRow += 'O';
-                        }
-                        // Else if the universe[x,y] is dead then append '.' (period)
-                        // to the row string.
-                        else
-                        {
-                            currentRow += '.';
-                        }
+                        continue;
                     }
-
-                    // Once the current row has been read through and the 
-                    // string constructed then write it to the file using WriteLine.
-                    writer.WriteLine(currentRow);
+                    // If the row is not a comment then it is a row of cells.
+                    // Increment the maxHeight variable for each row read.
+                    else
+                    {
+                        maxHeight++;
+                    }
+                    // Get the length of the current row string
+                    // and adjust the maxWidth variable if necessary.
+                    maxWidth = row.Length;
                 }
 
-                // After all rows and columns have been written then close the file.
-                writer.Close();
+                // Resize the current universe and scratchPad
+                // to the width and height of the file calculated above.
+                universe = new bool[maxWidth, maxHeight];
+                scratchPad = new bool[maxWidth, maxHeight];
+                // Reset the file pointer back to the beginning of the file.
+                reader.BaseStream.Seek(0, SeekOrigin.Begin);
+
+                // Iterate through the file again, this time reading in the cells.
+                while (!reader.EndOfStream)
+                {
+                    // Read one row at a time.
+                    string row = reader.ReadLine();
+
+                    // If the row begins with '!' then
+                    // it is a comment and should be ignored.
+                    if (row[0] == '!')
+                        continue;
+                    // If the row is not a comment then 
+                    // it is a row of cells and needs to be iterated through.
+                    for (int xPos = 0; xPos < row.Length; xPos++)
+                    {
+                        // If row[xPos] is a 'O' (capital O) then
+                        // set the corresponding cell in the universe to alive.
+                        if(row[xPos] == 'O')
+                            universe[xPos,yPos] = true;
+                        // If row[xPos] is a '.' (period) then
+                        // set the corresponding cell in the universe to dead.
+                        if(row[xPos] == '.')
+                            universe[xPos, yPos] = false;
+                    }
+                    yPos++;
+                }
+
+                // Close the file.
+                reader.Close();
             }
         }
 
@@ -406,6 +476,7 @@ namespace GameOfLife
             {
                 seed = dlg2.Number;
                 Randomize();
+                SeedStripStatusLabel.Text = "Seed = " + seed.ToString();
             }
         }
 
@@ -446,7 +517,50 @@ namespace GameOfLife
         private void optionsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             OptionsForm options = new OptionsForm();
-            options.ShowDialog();
+
+            options.Number = timer.Interval;
+            options.WidthNum = uniWith;
+            options.HeightNum = uniHeight;
+
+            if (DialogResult.OK == options.ShowDialog())
+            {
+                uniWith = options.Number;
+                uniHeight = options.HeightNum;
+                timer.Interval = options.Number;
+                universe = new bool[uniWith, uniHeight];
+                scratchPad = new bool[uniWith, uniHeight];
+
+                graphicsPanel1.Invalidate();
+            }
+           
+        }
+
+        private void toggleGridLinesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (toggleGridLinesToolStripMenuItem.Checked)
+                gridColor = Color.Empty;
+            else
+            {
+                gridColor = Color.Black;
+            }
+        }
+
+        private void finiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            isToroidal = false;
+            toroidalToolStripMenuItem.Checked = false;
+        }
+
+        private void toroidalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            isToroidal = true;
+            finiteToolStripMenuItem.Checked = false;
+        }
+
+        private void toggleHUDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            statusStrip1.Visible = !statusStrip1.Visible;
+
         }
     }
 }

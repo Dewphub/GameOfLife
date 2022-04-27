@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCan = new System.Windows.Forms.Button();
             this.labelT = new System.Windows.Forms.Label();
             this.labelW = new System.Windows.Forms.Label();
@@ -36,21 +35,11 @@
             this.numericUpDownTime = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownWidth = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownHeight = new System.Windows.Forms.NumericUpDown();
-            this.labelG = new System.Windows.Forms.Label();
-            this.checkBoxGrid = new System.Windows.Forms.CheckBox();
+            this.buttonOk = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeight)).BeginInit();
             this.SuspendLayout();
-            // 
-            // buttonOK
-            // 
-            this.buttonOK.Location = new System.Drawing.Point(133, 205);
-            this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
-            this.buttonOK.TabIndex = 0;
-            this.buttonOK.Text = "Ok";
-            this.buttonOK.UseVisualStyleBackColor = true;
             // 
             // buttonCan
             // 
@@ -98,6 +87,11 @@
             // 
             // numericUpDownWidth
             // 
+            this.numericUpDownWidth.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.numericUpDownWidth.Location = new System.Drawing.Point(203, 86);
             this.numericUpDownWidth.Name = "numericUpDownWidth";
             this.numericUpDownWidth.Size = new System.Drawing.Size(120, 20);
@@ -105,38 +99,34 @@
             // 
             // numericUpDownHeight
             // 
+            this.numericUpDownHeight.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.numericUpDownHeight.Location = new System.Drawing.Point(203, 118);
             this.numericUpDownHeight.Name = "numericUpDownHeight";
             this.numericUpDownHeight.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownHeight.TabIndex = 7;
             // 
-            // labelG
+            // buttonOk
             // 
-            this.labelG.AutoSize = true;
-            this.labelG.Location = new System.Drawing.Point(107, 146);
-            this.labelG.Name = "labelG";
-            this.labelG.Size = new System.Drawing.Size(90, 13);
-            this.labelG.TabIndex = 8;
-            this.labelG.Text = "Toggle Grid Lines";
-            // 
-            // checkBoxGrid
-            // 
-            this.checkBoxGrid.AutoSize = true;
-            this.checkBoxGrid.Location = new System.Drawing.Point(204, 146);
-            this.checkBoxGrid.Name = "checkBoxGrid";
-            this.checkBoxGrid.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxGrid.TabIndex = 9;
-            this.checkBoxGrid.UseVisualStyleBackColor = true;
+            this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.buttonOk.Location = new System.Drawing.Point(121, 205);
+            this.buttonOk.Name = "buttonOk";
+            this.buttonOk.Size = new System.Drawing.Size(75, 23);
+            this.buttonOk.TabIndex = 8;
+            this.buttonOk.Text = "Ok";
+            this.buttonOk.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
-            this.AcceptButton = this.buttonOK;
+            this.AcceptButton = this.buttonOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCan;
             this.ClientSize = new System.Drawing.Size(413, 261);
-            this.Controls.Add(this.checkBoxGrid);
-            this.Controls.Add(this.labelG);
+            this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.numericUpDownHeight);
             this.Controls.Add(this.numericUpDownWidth);
             this.Controls.Add(this.numericUpDownTime);
@@ -144,7 +134,6 @@
             this.Controls.Add(this.labelW);
             this.Controls.Add(this.labelT);
             this.Controls.Add(this.buttonCan);
-            this.Controls.Add(this.buttonOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -160,8 +149,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonCan;
         private System.Windows.Forms.Label labelT;
         private System.Windows.Forms.Label labelW;
@@ -169,7 +156,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDownTime;
         private System.Windows.Forms.NumericUpDown numericUpDownWidth;
         private System.Windows.Forms.NumericUpDown numericUpDownHeight;
-        private System.Windows.Forms.Label labelG;
-        private System.Windows.Forms.CheckBox checkBoxGrid;
+        private System.Windows.Forms.Button buttonOk;
     }
 }

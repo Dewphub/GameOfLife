@@ -54,6 +54,7 @@
             this.backColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gridColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.randomizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fromSeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fromTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,10 +75,14 @@
             this.toolStripStatusLabelGenerations = new System.Windows.Forms.ToolStripStatusLabel();
             this.AliveStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.DeadStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.graphicsPanel1 = new GameOfLife.GraphicsPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.optionsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionsToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.SeedStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toggleGridLinesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.finiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toroidalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.graphicsPanel1 = new GameOfLife.GraphicsPanel();
+            this.toggleHUDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -259,23 +264,30 @@
             // backColorToolStripMenuItem
             // 
             this.backColorToolStripMenuItem.Name = "backColorToolStripMenuItem";
-            this.backColorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.backColorToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.backColorToolStripMenuItem.Text = "Back Color";
             this.backColorToolStripMenuItem.Click += new System.EventHandler(this.backColorToolStripMenuItem_Click);
             // 
             // gridColorToolStripMenuItem
             // 
             this.gridColorToolStripMenuItem.Name = "gridColorToolStripMenuItem";
-            this.gridColorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gridColorToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.gridColorToolStripMenuItem.Text = "Grid Color";
             this.gridColorToolStripMenuItem.Click += new System.EventHandler(this.gridColorToolStripMenuItem_Click);
             // 
             // colorToolStripMenuItem1
             // 
             this.colorToolStripMenuItem1.Name = "colorToolStripMenuItem1";
-            this.colorToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.colorToolStripMenuItem1.Size = new System.Drawing.Size(131, 22);
             this.colorToolStripMenuItem1.Text = "Cell Color";
             this.colorToolStripMenuItem1.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
+            // 
+            // optionsToolStripMenuItem2
+            // 
+            this.optionsToolStripMenuItem2.Name = "optionsToolStripMenuItem2";
+            this.optionsToolStripMenuItem2.Size = new System.Drawing.Size(131, 22);
+            this.optionsToolStripMenuItem2.Text = "Options";
+            this.optionsToolStripMenuItem2.Click += new System.EventHandler(this.optionsToolStripMenuItem1_Click);
             // 
             // randomizeToolStripMenuItem
             // 
@@ -432,7 +444,8 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelGenerations,
             this.AliveStripStatusLabel1,
-            this.DeadStripStatusLabel1});
+            this.DeadStripStatusLabel1,
+            this.SeedStripStatusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 320);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(584, 22);
@@ -457,9 +470,58 @@
             this.DeadStripStatusLabel1.Size = new System.Drawing.Size(85, 17);
             this.DeadStripStatusLabel1.Text = "Dead Cells  = 0";
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.optionsToolStripMenuItem1,
+            this.toggleGridLinesToolStripMenuItem,
+            this.finiteToolStripMenuItem,
+            this.toroidalToolStripMenuItem,
+            this.toggleHUDToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 136);
+            // 
+            // optionsToolStripMenuItem1
+            // 
+            this.optionsToolStripMenuItem1.Name = "optionsToolStripMenuItem1";
+            this.optionsToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.optionsToolStripMenuItem1.Text = "Options";
+            this.optionsToolStripMenuItem1.Click += new System.EventHandler(this.optionsToolStripMenuItem1_Click);
+            // 
+            // SeedStripStatusLabel
+            // 
+            this.SeedStripStatusLabel.Name = "SeedStripStatusLabel";
+            this.SeedStripStatusLabel.Size = new System.Drawing.Size(52, 17);
+            this.SeedStripStatusLabel.Text = "Seed = 0";
+            // 
+            // toggleGridLinesToolStripMenuItem
+            // 
+            this.toggleGridLinesToolStripMenuItem.CheckOnClick = true;
+            this.toggleGridLinesToolStripMenuItem.Name = "toggleGridLinesToolStripMenuItem";
+            this.toggleGridLinesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.toggleGridLinesToolStripMenuItem.Text = "Toggle Grid Lines";
+            this.toggleGridLinesToolStripMenuItem.Click += new System.EventHandler(this.toggleGridLinesToolStripMenuItem_Click);
+            // 
+            // finiteToolStripMenuItem
+            // 
+            this.finiteToolStripMenuItem.CheckOnClick = true;
+            this.finiteToolStripMenuItem.Name = "finiteToolStripMenuItem";
+            this.finiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.finiteToolStripMenuItem.Text = "Finite";
+            this.finiteToolStripMenuItem.Click += new System.EventHandler(this.finiteToolStripMenuItem_Click);
+            // 
+            // toroidalToolStripMenuItem
+            // 
+            this.toroidalToolStripMenuItem.CheckOnClick = true;
+            this.toroidalToolStripMenuItem.Name = "toroidalToolStripMenuItem";
+            this.toroidalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.toroidalToolStripMenuItem.Text = "Toroidal";
+            this.toroidalToolStripMenuItem.Click += new System.EventHandler(this.toroidalToolStripMenuItem_Click);
+            // 
             // graphicsPanel1
             // 
             this.graphicsPanel1.BackColor = System.Drawing.SystemColors.Window;
+            this.graphicsPanel1.ContextMenuStrip = this.contextMenuStrip1;
             this.graphicsPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.graphicsPanel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.graphicsPanel1.Location = new System.Drawing.Point(0, 49);
@@ -469,26 +531,13 @@
             this.graphicsPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.graphicsPanel1_Paint);
             this.graphicsPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsPanel1_MouseClick);
             // 
-            // contextMenuStrip1
+            // toggleHUDToolStripMenuItem
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.optionsToolStripMenuItem1});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(117, 26);
-            // 
-            // optionsToolStripMenuItem1
-            // 
-            this.optionsToolStripMenuItem1.Name = "optionsToolStripMenuItem1";
-            this.optionsToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.optionsToolStripMenuItem1.Text = "Options";
-            this.optionsToolStripMenuItem1.Click += new System.EventHandler(this.optionsToolStripMenuItem1_Click);
-            // 
-            // optionsToolStripMenuItem2
-            // 
-            this.optionsToolStripMenuItem2.Name = "optionsToolStripMenuItem2";
-            this.optionsToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
-            this.optionsToolStripMenuItem2.Text = "Options";
-            this.optionsToolStripMenuItem2.Click += new System.EventHandler(this.optionsToolStripMenuItem1_Click);
+            this.toggleHUDToolStripMenuItem.CheckOnClick = true;
+            this.toggleHUDToolStripMenuItem.Name = "toggleHUDToolStripMenuItem";
+            this.toggleHUDToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.toggleHUDToolStripMenuItem.Text = "Toggle HUD";
+            this.toggleHUDToolStripMenuItem.Click += new System.EventHandler(this.toggleHUDToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -564,6 +613,11 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripStatusLabel SeedStripStatusLabel;
+        private System.Windows.Forms.ToolStripMenuItem toggleGridLinesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem finiteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toroidalToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toggleHUDToolStripMenuItem;
     }
 }
 

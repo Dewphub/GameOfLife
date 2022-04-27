@@ -17,5 +17,22 @@ namespace GameOfLife
             InitializeComponent();
         }
 
+        public int Number
+        {
+            get { return (int)numericUpDownTime.Value; }
+            set { numericUpDownTime.Value = value; }
+        }
+        public int WidthNum
+        {
+             get { return (int)numericUpDownWidth.Value; }
+            set { numericUpDownWidth.Value = value; }
+            
+        }
+        public int HeightNum
+        {
+            get { return (int)numericUpDownHeight.Value; }
+            set { numericUpDownHeight.Value = value; }
+        }
+
     }
 }
